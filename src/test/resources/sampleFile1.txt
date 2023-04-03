@@ -1,0 +1,9 @@
+A2609ST9      033023     MY                                                     
+B  2609ST9MY                                               802102610            
+$1US20TCEN1020LOS                                                               
+$2    US20TH CENTURY FOX TELEVISION                                             
+$3                              10201 W. PICO BLVD                              
+$4                                                   LOS ANGELES                
+$5                                            90035                             
+Y  2609ST9MY                                                                    
+Z2609ST9      033023                                                            

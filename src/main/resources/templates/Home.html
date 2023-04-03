@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Adding Manufacturers</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootswatch@4.5.2/dist/cyborg/bootstrap.min.css" integrity="sha384-nEnU7Ae+3lD52AK+RGNzgieBWMnEfgTbRHIwEvp1XXPdqdO6uLTd/NwXbzboqjc2" crossorigin="anonymous">
+</head>
+<body>
+<div class="container">
+    <h2>Adding Manufacturers</h2>
+    <ul>
+        <li><a href="./">Upload page</a></li>
+        <li><a href="./view">View all stored manufacturers</a></li>
+    </ul>
+
+<form action="./upload" method="post" enctype="multipart/form-data">
+    <div>
+        <label for="file">Choose a txt file for uploading</label>
+        <input type="file"
+               id="file" name="file"
+               accept="*.txt">
+    </div>
+    <div>
+        <button>Upload</button>
+    </div>
+
+
+    <th:block th:if="${infoMessage != null}">
+        <div class="alert alert-success" role="alert">
+            <strong th:text="${infoMessage}">infoMessage</strong></div>
+    </th:block>
+
+    <th:block th:if="${errorMessage != null}">
+        <div class="alert alert-danger" role="alert">
+            <strong th:text="${errorMessage}">errorMessage</strong></div>
+    </th:block>
+</form>
+</div>
+</body>
+
+</html>
