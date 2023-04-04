@@ -4,6 +4,7 @@ import com.example.netchb.dto.ManufacturerDto;
 import com.example.netchb.service.MessageService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.web.multipart.MultipartFile;
@@ -12,7 +13,9 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 
 @SpringBootTest
@@ -24,6 +27,9 @@ class MessageServiceTests {
     final static String CITY = "LOS ANGELES";
     final static String POSTAL_CODE = "90035";
 
+    @Value("${maximum.manufacturer.file.size:1000}")
+    private int maximumManufacturerFileSize;
+
     @Autowired
     MessageService messageService;
 
@@ -34,6 +40,8 @@ class MessageServiceTests {
         final File file = new File("src/test/resources/" + fileName);
 
         assertTrue(file.exists(), " Test file is not existed: " + fileName);
+
+        assertTrue(file.length() < maximumManufacturerFileSize, "File is too big: " + file.length() + " bytes! It should be less than " + maximumManufacturerFileSize + " bytes!");
 
         MultipartFile multipartFile = new MockMultipartFile(fileName, new FileInputStream(file));
         ManufacturerDto manufacturer = messageService.converterFileToManufacturer(multipartFile);
@@ -52,6 +60,8 @@ class MessageServiceTests {
         final File file = new File("src/test/resources/" + fileName);
 
         assertTrue(file.exists(), " Test file is not existed: " + fileName);
+
+        assertTrue(file.length() < maximumManufacturerFileSize, "File is too big: " + file.length() + " bytes! It should be less than " + maximumManufacturerFileSize + " bytes!");
 
         MultipartFile multipartFile = new MockMultipartFile(fileName, new FileInputStream(file));
         Exception  exception = assertThrows(IllegalArgumentException.class, () -> messageService.converterFileToManufacturer(multipartFile));
