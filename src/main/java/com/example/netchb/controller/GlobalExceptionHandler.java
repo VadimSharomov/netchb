@@ -14,9 +14,8 @@ public class GlobalExceptionHandler {
         String errorMessage = "Error: " + ex.getMessage() + " Description: " + request.getDescription(false);
         logger.error(errorMessage);
 
-        ModelAndView model = new ModelAndView();
+        ModelAndView model = new ModelAndView("Home");
         model.addObject("errorMessage", errorMessage);
-        model.setViewName("Home");
         return model;
     }
 }

@@ -37,19 +37,18 @@ public class ManufacturerController {
     @Value("${maximum.manufacturer.file.size:1000}")
     private int maximumManufacturerFileSize;
 
-    private static final String HOME_PAGE_NAME = "Home";
+    private static final String HOME_PAGE = "Home";
 
-    private static final String MANUFACTURER_VIEW_PAGE_NAME = "Manufacturers";
+    private static final String MANUFACTURER_PAGE = "Manufacturers";
 
-    private static final String INFO_MESSAGE_NAME = "infoMessage";
+    private static final String INFO_MESSAGE = "infoMessage";
 
-    private static final String MANUFACTURER_TABLE_NAME = "manufacturers";
+    private static final String MANUFACTURER_TABLE = "manufacturers";
 
     @GetMapping(path = "/")
     public ModelAndView indexPage() {
-        ModelAndView model = new ModelAndView();
+        ModelAndView model = new ModelAndView("Home");
         model.addObject("maximumManufacturerFileSize", maximumManufacturerFileSize);
-        model.setViewName("Home");
         return model;
     }
 
@@ -59,8 +58,8 @@ public class ManufacturerController {
         logger.debug("Added manufacturer code:" + manufacturer.getManufacturerCode());
 
         model.addAttribute("maximumManufacturerFileSize", maximumManufacturerFileSize);
-        model.addAttribute(INFO_MESSAGE_NAME, "Added manufacturer with code:" + manufacturer.getManufacturerCode());
-        return HOME_PAGE_NAME;
+        model.addAttribute(INFO_MESSAGE, "Added manufacturer with code:" + manufacturer.getManufacturerCode());
+        return HOME_PAGE;
     }
 
     @PostMapping(path = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
@@ -74,14 +73,21 @@ public class ManufacturerController {
         logger.info("Stored a new manufacturer with id code:" + manufacturer.getManufacturerCode());
 
         model.addAttribute("maximumManufacturerFileSize", maximumManufacturerFileSize);
-        model.addAttribute(INFO_MESSAGE_NAME, "Uploaded file:" + multipartFile.getOriginalFilename() + ", length:" + multipartFile.getSize() + ", with manufacturer code id: " + manufacturer.getManufacturerCode());
-        return HOME_PAGE_NAME;
+        model.addAttribute(INFO_MESSAGE, "Uploaded file:" + multipartFile.getOriginalFilename() + ", length:" + multipartFile.getSize() + ", with manufacturer code id: " + manufacturer.getManufacturerCode());
+        return HOME_PAGE;
     }
 
     @GetMapping(path = "/view")
     public String getAllManufacturers(Model model) {
-        model.addAttribute(MANUFACTURER_TABLE_NAME, modelMapper.map(manufacturerRepository.findAll(), new TypeToken<List<ManufacturerDto>>() {
+        model.addAttribute(MANUFACTURER_TABLE, modelMapper.map(manufacturerRepository.findAll(), new TypeToken<List<ManufacturerDto>>() {
         }.getType()));
-        return MANUFACTURER_VIEW_PAGE_NAME;
+        return MANUFACTURER_PAGE;
+    }
+
+    @GetMapping(path = "/list")
+    public String getAllManufacturersDynamically(Model model) {
+        model.addAttribute(MANUFACTURER_TABLE, modelMapper.map(manufacturerRepository.findAll(), new TypeToken<List<ManufacturerDto>>() {
+        }.getType()));
+        return MANUFACTURER_PAGE + " :: mf_table";
     }
 }
